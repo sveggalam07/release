@@ -71,7 +71,7 @@ podTemplate(yaml: '''
               git config --global user.name "${GIT_USER}"
 
               git push https://"${GIT_PAT_WRITE}"@github.com/"${RELEASE_BRANCH}"/"${RELEASE_BRANCH}"
-              git push origin "${RELEASE_BRANCH}":"${RELEASE_BRANCH}"
+              #git push origin "${RELEASE_BRANCH}":"${RELEASE_BRANCH}"
             '''
           }
         } catch (e) {
