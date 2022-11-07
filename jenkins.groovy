@@ -64,7 +64,7 @@ podTemplate(yaml: '''
               git clone https://"${GIT_PAT_READ}"@github.com/"${GITHUB_ORG}"/"${SERVICE_NAME}"
               cd "${SERVICE_NAME}"
               git checkout main
-              git remote add origin git@github.com:"${GITHUB_ORG}"/"${SERVICE_NAME}".git
+              #git remote add origin git@github.com:"${GITHUB_ORG}"/"${SERVICE_NAME}".git
               git checkout -b "${RELEASE_BRANCH}"
 
               git config --global user.email "${GIT_EMAIL}"
