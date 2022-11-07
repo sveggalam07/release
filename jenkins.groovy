@@ -36,10 +36,10 @@ podTemplate(yaml: '''
   node(POD_LABEL){
     properties([
       parameters([
-        string(defaultValue: '', description: 'Name of the repo', name: 'SERVICE_NAME'),
-        string(defaultValue: '', description: 'Release Branch Name', name: 'RELEASE_BRANCH'),
-        string(defaultValue: '', description: 'GITHUB_ORG', name: 'GITHUB_ORG'),
-        string(defaultValue: '', description: 'Slack_Channel', name: 'SLACK_CHANNEL'),
+        string(defaultValue: 'RELEASEBRANCH', description: 'Name of the repo', name: 'SERVICE_NAME'),
+        string(defaultValue: 'test', description: 'Release Branch Name', name: 'RELEASE_BRANCH'),
+        string(defaultValue: 'sveggalam07', description: 'GITHUB_ORG', name: 'GITHUB_ORG'),
+        string(defaultValue: 'U03N4M5EZCL', description: 'Slack_Channel', name: 'SLACK_CHANNEL'),
         ])
     ])
     env.SERVICE_NAME = params.SERVICE_NAME
