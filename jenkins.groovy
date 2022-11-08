@@ -58,8 +58,8 @@ podTemplate(yaml: '''
             env.GIT_PAT_WRITE = sh (script: 'echo "$GIT_PAT_WRITE"', returnStdout: true).trim()
             env.GIT_USER = sh (script: 'echo "$GIT_USER"', returnStdout: true).trim()
             env.GIT_EMAIL = sh (script: 'echo "$GIT_EMAIL"', returnStdout: true).trim()
+            def SHA=$(curl -H "Authorization: token $GIT_PAT_READ" https://api.github.com/repos/"${SERVICE_NAME}"/git/refs/heads/master | jq -r '.object.sha')
             sh '''
-              SHA=$(curl -H "Authorization: token $GIT_PAT_READ" https://api.github.com/repos/"${SERVICE_NAME}"/git/refs/heads/master | jq -r '.object.sha')
               curl -X POST -H "Authorization: token $GIT_PAT_READ" \
               -d  "{\"ref\": \"refs/heads/$RELEASE_BRANCH\",\"sha\": \"$SHA\"}"  https://api.github.com/repos/"${SERVICE_NAME}"/git/refs
             '''
