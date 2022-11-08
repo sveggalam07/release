@@ -58,20 +58,24 @@ podTemplate(yaml: '''
             env.GIT_PAT_WRITE = sh (script: 'echo "$GIT_PAT_WRITE"', returnStdout: true).trim()
             env.GIT_USER = sh (script: 'echo "$GIT_USER"', returnStdout: true).trim()
             env.GIT_EMAIL = sh (script: 'echo "$GIT_EMAIL"', returnStdout: true).trim()
-
             sh '''
-              #git config --global url."https://${env.GIT_PAT}@github.com/".insteadOf "git@github.com:"
-              git clone https://"${GIT_PAT_READ}"@github.com/"${GITHUB_ORG}"/"${SERVICE_NAME}"
-              cd "${SERVICE_NAME}"
-              git checkout main
-              git checkout -b "${RELEASE_BRANCH}"
-
-              git config --global user.email "${GIT_EMAIL}"
-              git config --global user.name "${GIT_USER}"
-
-              #git push https://"${GIT_PAT_WRITE}"@github.com/main/"${RELEASE_BRANCH}"
-              #git push origin "${RELEASE_BRANCH}":"${RELEASE_BRANCH}"
+              SHA=$(curl -H "Authorization: token $GIT_PAT_READ" https://api.github.com/repos/"${SERVICE_NAME}"/git/refs/heads/master | jq -r '.object.sha')
+              curl -X POST -H "Authorization: token $GIT_PAT_READ" \
+              -d  "{\"ref\": \"refs/heads/$RELEASE_BRANCH\",\"sha\": \"$SHA\"}"  https://api.github.com/repos/"${SERVICE_NAME}"/git/refs
             '''
+            // sh '''
+            //   #git config --global url."https://${env.GIT_PAT}@github.com/".insteadOf "git@github.com:"
+            //   git clone https://"${GIT_PAT_READ}"@github.com/"${GITHUB_ORG}"/"${SERVICE_NAME}"
+            //   cd "${SERVICE_NAME}"
+            //   git checkout main
+            //   git checkout -b "${RELEASE_BRANCH}"
+
+            //   git config --global user.email "${GIT_EMAIL}"
+            //   git config --global user.name "${GIT_USER}"
+
+            //   git push https://"${GIT_PAT_WRITE}"@github.com/"${RELEASE_BRANCH}"/"${RELEASE_BRANCH}"
+            //   #git push origin "${RELEASE_BRANCH}":"${RELEASE_BRANCH}"
+            // '''
           }
         } catch (e) {
           throw e
